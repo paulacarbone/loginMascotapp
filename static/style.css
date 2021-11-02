@@ -6,8 +6,9 @@
     -moz-osx-font-smoothing: grayscale;
 }
 body {
-    background-color: #435165;
+    background-image: url(/static/images/woman-2711279_1920.jpg );
     margin: 0;
+    background-repeat: no-repeat;
 }
 .login, .register {
     width: 400px;

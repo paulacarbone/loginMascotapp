@@ -3,11 +3,13 @@
 	<head>
 		<meta charset="utf-8">
 		<title>{% block title %}{% endblock %}</title>
+		
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body class="loggedin">
 		<nav class="navtop">
+			
 			<div>
 				<h1>MASCOTAPP</h1>
                 <a href="{{ url_for('home') }}"><i class="fas fa-home"></i>Home</a>
