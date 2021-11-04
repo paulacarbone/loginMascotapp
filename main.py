@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
-import re
-
 app = Flask(__name__)
 
 app.secret_key = 'your secret key'
@@ -13,15 +11,15 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'pythonlogin'
 
-
+id
 mysql = MySQL(app)
 
-@app.route('/pythonlogin/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def login():
    
     msg = ''
     
-    if request.method == 'POST' and 'usuario' in request.form and 'password' in request.form:
+    if request.method == 'POST':
         usuario = request.form['usuario']
         password = request.form['password']
         
@@ -29,12 +27,15 @@ def login():
         cursor.execute('SELECT * FROM accounts WHERE usuario = %s AND password = %s', (usuario, password,))
         
         account = cursor.fetchone()
-        
+        global id
         if account:
             
+            id = account['id']
             session['loggedin'] = True
             session['id'] = account['id']
             session['usuario'] = account['usuario']
+            session['nombre'] = account['nombre']
+            session['apellido'] = account['apellido']
             
             return redirect(url_for('home'))       
         else:  
@@ -42,19 +43,41 @@ def login():
     return render_template('index.html', msg=msg)
    
 
-@app.route('/pythonlogin/logout')
+@app.route('/logout')
 def logout():
    session.pop('loggedin', None)
    session.pop('id', None)
    session.pop('usuario', None)
- 
    return redirect(url_for('login'))
 
-@app.route('/pythonlogin/register', methods=['GET', 'POST'])
+@app.route('/home/edit', methods=['GET', 'POST'])
+def edit():
+    global id
+    if request.method == 'POST':
+        password = request.form['password']
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        localidad = request.form['localidad']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM accounts WHERE id = %s', (id,))
+        account = cursor.fetchone()
+        cursor.execute("""
+            UPDATE accounts
+            SET nombre = %s,
+                apellido = %s,
+                localidad = %s,
+                password = %s
+            WHERE id = %s
+        """, (nombre, apellido, localidad, password, account['id'],))
+        mysql.connection.commit()
+        return redirect(url_for('home'))
+    return render_template('edit.html')
+
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     msg = ''
     
-    if request.method == 'POST' and 'nombre' in request.form and 'apellido' in request.form and 'localidad' in request.form and 'usuario' in request.form and 'password' in request.form:
+    if request.method == 'POST':
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         localidad = request.form['localidad']
@@ -66,10 +89,7 @@ def register():
         
         if account:
             msg = 'El usuario ya existe!'
-        elif not usuario or not password:
-            msg = 'Please fill out the form!'
-        else:
-            
+        else:                     
             cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (nombre, apellido, localidad, usuario, password,))
             mysql.connection.commit()
             msg = 'Usuario registrado correctamente!'
@@ -78,17 +98,17 @@ def register():
         msg = 'Please fill out the form!'
     return render_template('register.html', msg=msg)   
 
-@app.route('/pythonlogin/home')
+@app.route('/home')
 def home():
     
     if 'loggedin' in session:
-        return render_template('home.html', usuario=session['usuario'])
+        return render_template('home.html', nombre=session['nombre'], apellido=session['apellido'])
     
     return redirect(url_for('login'))  
 
 
 if __name__ == "__main__":
-    app.run(port=3306, debug=True)
+    app.run(port=3000, debug=True)
 
 
     
