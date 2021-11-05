@@ -55,8 +55,7 @@ INSERT INTO `accounts` (`id`, `nombre`, `apellido`, `localidad`, `usuario`, `pas
 -- Indexes for table `accounts`
 --
 ALTER TABLE `accounts`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `nombre` (`nombre`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
