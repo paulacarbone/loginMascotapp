@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
-app = Flask(__name__)
 
+app = Flask(__name__)
 app.secret_key = 'your secret key'
 
  
@@ -11,12 +11,12 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'pythonlogin'
 
-id
+user = {}
 mysql = MySQL(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-   
+    global user
     msg = ''
     
     if request.method == 'POST':
@@ -25,18 +25,17 @@ def login():
         
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE usuario = %s AND password = %s', (usuario, password,))
-        
         account = cursor.fetchone()
-        global id
+
         if account:
-            
-            id = account['id']
+            user = {"id" : account['id'],
+                "nombre" : account['nombre'],
+                "apellido" : account['apellido'],
+                "localidad" : account['localidad'],
+                "usuario" : account['usuario'],
+                "contraseña" : account['password']
+            }
             session['loggedin'] = True
-            session['id'] = account['id']
-            session['usuario'] = account['usuario']
-            session['nombre'] = account['nombre']
-            session['apellido'] = account['apellido']
-            
             return redirect(url_for('home'))       
         else:  
             msg = 'Usuario/password Incorrecto!'
@@ -45,22 +44,20 @@ def login():
 
 @app.route('/logout')
 def logout():
-   session.pop('loggedin', None)
-   session.pop('id', None)
-   session.pop('usuario', None)
-   return redirect(url_for('login'))
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('usuario', None)
+    return redirect(url_for('login'))
 
 @app.route('/home/edit', methods=['GET', 'POST'])
 def edit():
-    global id
+    global user
     if request.method == 'POST':
         password = request.form['password']
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         localidad = request.form['localidad']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM accounts WHERE id = %s', (id,))
-        account = cursor.fetchone()
         cursor.execute("""
             UPDATE accounts
             SET nombre = %s,
@@ -68,7 +65,7 @@ def edit():
                 localidad = %s,
                 password = %s
             WHERE id = %s
-        """, (nombre, apellido, localidad, password, account['id'],))
+        """, (nombre, apellido, localidad, password, user['id'],))
         mysql.connection.commit()
         return redirect(url_for('home'))
     return render_template('edit.html')
@@ -93,17 +90,13 @@ def register():
             cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (nombre, apellido, localidad, usuario, password,))
             mysql.connection.commit()
             msg = 'Usuario registrado correctamente!'
-    elif request.method == 'POST':
-        
-        msg = 'Please fill out the form!'
     return render_template('register.html', msg=msg)   
 
 @app.route('/home')
 def home():
-    
+    global user
     if 'loggedin' in session:
-        return render_template('home.html', nombre=session['nombre'], apellido=session['apellido'])
-    
+        return render_template('home.html', nombre = user['nombre'], apellido = user['apellido'])
     return redirect(url_for('login'))  
 
 
