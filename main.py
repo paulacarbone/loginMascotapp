@@ -14,6 +14,21 @@ app.config['MYSQL_DB'] = 'pythonlogin'
 user = {}
 mysql = MySQL(app)
 
+def refreshList() :
+    global user
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM accounts WHERE id = %s', (user['id'],))
+    account = cursor.fetchone()
+    user = {"id" : user['id'],
+            "nombre" : account['nombre'],
+            "apellido" : account['apellido'],
+            "localidad" : account['localidad'],
+            "usuario" : user['usuario'],
+            "contraseña" : account['password']
+            }
+
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     global user
@@ -39,7 +54,7 @@ def login():
             return redirect(url_for('home'))       
         else:  
             msg = 'Usuario/password Incorrecto!'
-    return render_template('index.html', msg=msg)
+    return render_template('index.html', msg = msg)
    
 
 @app.route('/logout')
@@ -71,8 +86,9 @@ def edit():
             WHERE id = %s
         """, (nombre, apellido, localidad, password, user['id'],))
         mysql.connection.commit()
+        refreshList()
         return redirect(url_for('home'))
-    return render_template('edit.html')
+    return render_template('edit.html', id = user["id"])
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -94,7 +110,7 @@ def register():
             cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (nombre, apellido, localidad, usuario, password,))
             mysql.connection.commit()
             msg = 'Usuario registrado correctamente!'
-    return render_template('register.html', msg=msg)   
+    return render_template('register.html', msg = msg)
 
 @app.route('/home')
 def home():
