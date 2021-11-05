@@ -44,15 +44,19 @@ def login():
 
 @app.route('/logout')
 def logout():
+    global user
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('usuario', None)
+    user = {}
     return redirect(url_for('login'))
 
 @app.route('/home/edit', methods=['GET', 'POST'])
 def edit():
     global user
-    if request.method == 'POST':
+    if len(user) == 0:
+        return redirect(url_for('login'))
+    elif request.method == 'POST':
         password = request.form['password']
         nombre = request.form['nombre']
         apellido = request.form['apellido']
