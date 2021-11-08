@@ -74,7 +74,7 @@ def edit():
         mysql.connection.commit()
         refreshList()
         return redirect(url_for('home'))
-    return render_template('edit.html', id = user["id"])
+    return render_template('edit.html', user = user)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
