@@ -47,8 +47,8 @@ body {
 }
 
 .edit .links a.active {
-    border-bottom: 3px solid #3274d6;
-    color: #3274d6;
+    border-bottom: 3px solid rgb(199, 75, 4);
+    color: rgb(199, 75, 4);
 }
 
 .edit form {
@@ -64,7 +64,7 @@ body {
     align-items: center;
     width: 50px;
     height: 50px;
-    background-color: #3274d6;
+    background-color: rgb(199, 75, 4);
     color: #ffffff;
 }
 
@@ -80,7 +80,7 @@ body {
     width: 100%;
     padding: 15px;
     margin-top: 20px;
-    background-color: #3274d6;
+    background-color: rgb(199, 75, 4);
     border: 0;
     cursor: pointer;
     font-weight: bold;
@@ -89,7 +89,7 @@ body {
 }
 
 .edit form input[type="submit"]:hover {
-    background-color: #2868c7;
+    background-color: rgb(199, 75, 4);
     transition: background-color 0.2s;
 }
 .navtop {

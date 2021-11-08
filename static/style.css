@@ -41,8 +41,10 @@ body {
     color: #9da3ac;
 }
 .login .links a.active, .register .links a.active, .edit .links a.active {
-    border-bottom: 3px solid #3274d6;
-    color: #3274d6;
+    /* border-bottom: 3px solid #3274d6; */
+    border-bottom: 3px solid rgb(199, 75, 4);
+    /* color: #3274d6; */
+    color: rgb(199, 75, 4);
 }
 .login form, .register form, .edit form {
     display: flex;
@@ -56,7 +58,9 @@ body {
     align-items: center;
     width: 50px;
     height: 50px;
-    background-color: #3274d6;
+    /* background-color: #3274d6; */
+    background-color: rgb(199, 75, 4); 
+
     color: #ffffff;
 }
 
@@ -71,7 +75,8 @@ body {
     width: 100%;
     padding: 15px;
     margin-top: 20px;
-    background-color: #3274d6;
+    /* background-color: #3274d6; */
+    background-color: rgb(199, 75, 4);
     border: 0;
     cursor: pointer;
     font-weight: bold;
@@ -79,7 +84,7 @@ body {
     transition: background-color 0.2s;
 }
 .login form input[type="submit"]:hover, .register form input[type="submit"]:hover {
-    background-color: #2868c7;
+    background-color: #f59158;
     transition: background-color 0.2s;
 }
 .navtop {
@@ -149,10 +154,4 @@ body.loggedin {
 .content > div p {
   padding: 5px;
   margin: 0 0 10px 0;
-}
-.msg-success {
-    color: limegreen;
-}
-.msg-error {
-    color: red;
 }
