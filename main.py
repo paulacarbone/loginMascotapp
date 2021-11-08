@@ -16,20 +16,13 @@ mysql = MySQL(app)
 
 def refreshList() :
     global user
-
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM accounts WHERE id = %s', (user['id'],))
-    account = cursor.fetchone()
-    user = {"id" : user['id'],
-            "nombre" : account['nombre'],
-            "apellido" : account['apellido'],
-            "localidad" : account['localidad'],
-            "usuario" : user['usuario'],
-            "contraseña" : account['password']
-            }
+    user = cursor.fetchone()
 
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/', methods = ['GET', 'POST'])
 def login():
     global user
     msg = ''
@@ -40,16 +33,9 @@ def login():
         
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM accounts WHERE usuario = %s AND password = %s', (usuario, password,))
-        account = cursor.fetchone()
+        user = cursor.fetchone()
 
-        if account:
-            user = {"id" : account['id'],
-                "nombre" : account['nombre'],
-                "apellido" : account['apellido'],
-                "localidad" : account['localidad'],
-                "usuario" : account['usuario'],
-                "contraseña" : account['password']
-            }
+        if user:
             session['loggedin'] = True
             return redirect(url_for('home'))       
         else:  
