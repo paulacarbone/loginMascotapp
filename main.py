@@ -25,7 +25,7 @@ def refreshList() :
 @app.route('/', methods = ['GET', 'POST'])
 def login():
     global user
-    msg = ''
+    error = ''
     
     if request.method == 'POST':
         usuario = request.form['usuario']
@@ -39,8 +39,8 @@ def login():
             session['loggedin'] = True
             return redirect(url_for('home'))       
         else:  
-            msg = 'Usuario/password Incorrecto!'
-    return render_template('index.html', msg = msg)
+            error = '¡Usuario/contraseña Incorrecto!'
+    return render_template('index.html', error = error)
    
 
 @app.route('/logout')
@@ -78,7 +78,7 @@ def edit():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    msg = ''
+    error = ''
     
     if request.method == 'POST':
         nombre = request.form['nombre']
@@ -91,12 +91,13 @@ def register():
         account = cursor.fetchone()
         
         if account:
-            msg = 'El usuario ya existe!'
+            error = '¡El usuario ya existe!'
         else:                     
             cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s, %s, %s)', (nombre, apellido, localidad, usuario, password,))
             mysql.connection.commit()
-            msg = 'Usuario registrado correctamente!'
-    return render_template('register.html', msg = msg)
+            msg = '¡Usuario registrado correctamente!'
+            return render_template('index.html', msg = msg)
+    return render_template('register.html', error = error)
 
 @app.route('/home')
 def home():

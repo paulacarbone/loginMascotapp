@@ -10,23 +10,23 @@
 	<body>
 		
 		<div class="login">
-			<h1>Login</h1>
+			<h1>Iniciar Sesión</h1>
 			<div class="links">
-				<a href="{{ url_for('login') }}" class="active">Login</a>
+				<a href="{{ url_for('login') }}" class="active">Iniciar Sesión</a>
 				<a href="{{ url_for('register') }}">Registrarse</a>
-
 			</div>
 			<form action="{{ url_for('login') }}" method="post">
 				<label for="usuario">
-					<i class="fas fa-user"></i>
+					<i class="fas fa-id-card"></i>
 				</label>
 				<input type="text" name="usuario" placeholder="Usuario" id="usuario" required>
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="password" name="password" placeholder="Contraseña" id="password" required>
-				<div class="msg">{{ msg }}</div>
-				<input type="submit" value="Login">
+				<div class="msg-error">{{ error }}</div>
+				<div class="msg-success">{{ msg }}</div>
+				<input type="submit" value="Ingresar">
 			</form>
 		</div>
 	</body>
