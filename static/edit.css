@@ -8,6 +8,7 @@
 
 body {
     background-image: url(/static/images/woman-2711279_1920.jpg );
+    background-size: cover;
     margin: 0;
     background-repeat: no-repeat;
     border-radius: 5%;
