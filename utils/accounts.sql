@@ -56,7 +56,6 @@ INSERT INTO `accounts` (`id`, `nombre`, `apellido`, `localidad`, `usuario`, `pas
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`);
-
 --
 -- AUTO_INCREMENT for dumped tables
 --

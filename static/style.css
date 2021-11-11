@@ -5,6 +5,16 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+input:focus {
+    animation: inputAnimation 2s forwards;
+}
+
+@keyframes inputAnimation {
+    from  {background-color: withe;}
+    to {background-color: rgba(199, 75, 4, 0.15);}
+}
+
 body {
     background-image: url(/static/images/woman-2711279_1920.jpg );
     background-size: cover;
@@ -13,6 +23,18 @@ body {
     border-radius: 5%;
 }
 
+img {
+    align-content: center;
+    display: block;
+    margin: auto;
+}
+
+div.content p {
+    text-align: center;
+    font-size: xx-large;
+    color: ghostwhite;
+    font-weight: 600;
+}
 .login, .register, .edit {
     width: 400px;
     background-color: #ffffff;
@@ -136,12 +158,6 @@ body.loggedin {
     font-size: 22px;
     border-bottom: 1px solid #e0e0e3;
     color: #4a536e;
-}
-.content > p, .content > div {
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
-    margin: 25px 0;
-    padding: 25px;
-  background-color: #fff;
 }
 .content > p table td, .content > div table td {
   padding: 5px;
