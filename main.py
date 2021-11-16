@@ -55,7 +55,7 @@ def logout():
 @app.route('/home/edit', methods=['GET', 'POST'])
 def edit():
     global user
-    if len(user) == 0:
+    if not user:
         return redirect(url_for('login'))
     elif request.method == 'POST':
         password = request.form['password']
@@ -108,7 +108,7 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(port=3000, debug=True)
+    app.run(port=3306, debug=True)
 
 
     
